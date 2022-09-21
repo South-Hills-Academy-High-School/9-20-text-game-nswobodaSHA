@@ -125,6 +125,46 @@ function gameOver (text: string) {
     game.showLongText(text, DialogLayout.Bottom)
     game.over(false)
 }
+function multipleChoice (choices: any[]) {
+    choice_a = sprites.create(img`
+        . . . . . 
+        . 2 2 . . 
+        2 1 1 2 . 
+        2 2 2 2 . 
+        2 1 1 2 . 
+        `, SpriteKind.Player)
+    choice_a.setPosition(78, 58)
+    game.showLongText(choices[0], DialogLayout.Bottom)
+    choice_a.destroy()
+    choice_b = sprites.create(img`
+        8 8 8 . . 
+        8 1 1 8 . 
+        8 8 8 . . 
+        8 1 1 8 . 
+        8 8 8 . . 
+        `, SpriteKind.Player)
+    choice_b.setPosition(78, 58)
+    game.showLongText(choices[1], DialogLayout.Bottom)
+    choice_b.destroy()
+    choice_c = sprites.create(img`
+        . 7 7 . . 
+        7 1 1 7 . 
+        7 1 1 1 . 
+        7 1 1 7 . 
+        . 7 7 . . 
+        `, SpriteKind.Player)
+    choice_c.setPosition(78, 58)
+    game.showLongText(choices[2], DialogLayout.Bottom)
+    choice_c.destroy()
+    choice = game.askForString("Make a choice! (A, B or C)")
+    while (!(choice == "A" || choice == "A" || choice == "A")) {
+        choice = game.askForString("Make a choice! (A, B or C)")
+    }
+}
+let choice_c: Sprite = null
+let choice_b: Sprite = null
+let choice_a: Sprite = null
+let choice = ""
 let mySprite: Sprite = null
 scene.setBackgroundImage(img`
     3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
@@ -487,6 +527,7 @@ if (game.ask("Drink the Iced Tea", "Walk 10 miles")) {
         game.showLongText("\"ahh, I love me some tea\"", DialogLayout.Bottom)
         game.showLongText("dinosaur is grateful and leaves you to survive by yourself", DialogLayout.Bottom)
         if (game.ask("go west ", "go east")) {
+            mySprite.destroy()
             scene.setBackgroundImage(img`
                 6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
                 6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
@@ -611,7 +652,17 @@ if (game.ask("Drink the Iced Tea", "Walk 10 miles")) {
                 `)
             game.showLongText("you found water and live the rest of your days in peace", DialogLayout.Bottom)
             game.over(true)
+            multipleChoice([0, 1, 0])
+            game.splash("You made the choice: ", choice)
+            if (choice == "A") {
+                game.over(false)
+            } else if (choice == "B") {
+                game.over(false)
+            } else {
+                game.over(true)
+            }
         } else {
+            mySprite.destroy()
             scene.setBackgroundImage(img`
                 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999966666699969999999999999999999999999999999999999999999999999999
                 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
